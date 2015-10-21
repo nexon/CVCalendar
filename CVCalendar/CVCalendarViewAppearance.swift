@@ -9,15 +9,15 @@
 import UIKit
 
 public final class CVCalendarViewAppearance: NSObject {
-    
+
     public override init() {
         super.init()
     }
-    
+
     /// Default rendering options.
     public var spaceBetweenWeekViews: CGFloat? = 0
     public var spaceBetweenDayViews: CGFloat? = 0
-    
+
     /// Default text options.
     public var dayLabelPresentWeekdayInitallyBold: Bool? = true
     public var dayLabelWeekdayFont: UIFont? = UIFont(name: "Avenir", size: 18)
@@ -27,7 +27,7 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     public var dayLabelWeekdayHighlightedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
     public var dayLabelWeekdaySelectedFont: UIFont? = UIFont(name: "Avenir-Heavy", size: 18)
-    
+
     /// Default text color.
     public var dayLabelWeekdayInTextColor: UIColor? = .blackColor()
     public var dayLabelWeekdayOutTextColor: UIColor? = .grayColor()
@@ -36,7 +36,7 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdayTextColor: UIColor? = .redColor()
     public var dayLabelPresentWeekdayHighlightedTextColor: UIColor? = .whiteColor()
     public var dayLabelPresentWeekdaySelectedTextColor: UIColor? = .whiteColor()
-    
+
     /// Default text size.
     public var dayLabelWeekdayTextSize: CGFloat? = 18
     public var dayLabelWeekdayHighlightedTextSize: CGFloat? = 20
@@ -44,34 +44,39 @@ public final class CVCalendarViewAppearance: NSObject {
     public var dayLabelPresentWeekdayTextSize: CGFloat? = 18
     public var dayLabelPresentWeekdayHighlightedTextSize: CGFloat? = 20
     public var dayLabelPresentWeekdaySelectedTextSize: CGFloat? = 20
-    
+
     /// Default highlighted state background & alpha.
     public var dayLabelWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0x34AADC)
     public var dayLabelWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
     public var dayLabelPresentWeekdayHighlightedBackgroundColor: UIColor? = .colorFromCode(0xFF5E3A)
     public var dayLabelPresentWeekdayHighlightedBackgroundAlpha: CGFloat? = 0.8
-    
+
     /// Default selected state background & alpha.
     public var dayLabelWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0x1D62F0)
     public var dayLabelWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
     public var dayLabelPresentWeekdaySelectedBackgroundColor: UIColor? = .colorFromCode(0xFF3B30)
     public var dayLabelPresentWeekdaySelectedBackgroundAlpha: CGFloat? = 0.8
-    
-    
+
+
     // Default dot marker color.
     public var dotMarkerColor: UIColor? = .whiteColor()
-    
+
+    // Default colors for Overlay
+    public var overlayBackgroundColor: UIColor? = UIColor(red: 201/256, green: 201/256, blue: 201/256, alpha: 0.2)
+    public var overlayTextColor: UIColor?       = UIColor.blackColor()
+    public var overlayFontLabel: UIFont?        = UIFont(name: "Avenir-Heavy", size: 18)
+
     public var delegate: CVCalendarViewAppearanceDelegate? {
         didSet {
             self.setupAppearance()
         }
     }
-    
+
     public func setupAppearance() {
         if let delegate = delegate {
             spaceBetweenWeekViews~>delegate.spaceBetweenWeekViews?()
             spaceBetweenDayViews~>delegate.spaceBetweenDayViews?()
-            
+
             dayLabelPresentWeekdayInitallyBold~>delegate.dayLabelPresentWeekdayInitallyBold?()
             dayLabelWeekdayFont~>delegate.dayLabelWeekdayFont?()
             dayLabelPresentWeekdayFont~>delegate.dayLabelPresentWeekdayFont?()
@@ -80,7 +85,7 @@ public final class CVCalendarViewAppearance: NSObject {
             dayLabelPresentWeekdaySelectedFont~>delegate.dayLabelPresentWeekdaySelectedFont?()
             dayLabelWeekdayHighlightedFont~>delegate.dayLabelWeekdayHighlightedFont?()
             dayLabelWeekdaySelectedFont~>delegate.dayLabelWeekdaySelectedFont?()
-            
+
             dayLabelWeekdayInTextColor~>delegate.dayLabelWeekdayInTextColor?()
             dayLabelWeekdayOutTextColor~>delegate.dayLabelWeekdayOutTextColor?()
             dayLabelWeekdayHighlightedTextColor~>delegate.dayLabelWeekdayHighlightedTextColor?()
@@ -88,25 +93,29 @@ public final class CVCalendarViewAppearance: NSObject {
             dayLabelPresentWeekdayTextColor~>delegate.dayLabelPresentWeekdayTextColor?()
             dayLabelPresentWeekdayHighlightedTextColor~>delegate.dayLabelPresentWeekdayHighlightedTextColor?()
             dayLabelPresentWeekdaySelectedTextColor~>delegate.dayLabelPresentWeekdaySelectedTextColor?()
-            
+
             dayLabelWeekdayTextSize~>delegate.dayLabelWeekdayTextSize?()
             dayLabelWeekdayHighlightedTextSize~>delegate.dayLabelWeekdayHighlightedTextSize?()
             dayLabelWeekdaySelectedTextSize~>delegate.dayLabelWeekdaySelectedTextSize?()
             dayLabelPresentWeekdayTextSize~>delegate.dayLabelPresentWeekdayTextSize?()
             dayLabelPresentWeekdayHighlightedTextSize~>delegate.dayLabelPresentWeekdayHighlightedTextSize?()
             dayLabelPresentWeekdaySelectedTextSize~>delegate.dayLabelPresentWeekdaySelectedTextSize?()
-            
+
             dayLabelWeekdayHighlightedBackgroundColor~>delegate.dayLabelWeekdayHighlightedBackgroundColor?()
             dayLabelWeekdayHighlightedBackgroundAlpha~>delegate.dayLabelWeekdayHighlightedBackgroundAlpha?()
             dayLabelPresentWeekdayHighlightedBackgroundColor~>delegate.dayLabelPresentWeekdayHighlightedBackgroundColor?()
             dayLabelPresentWeekdayHighlightedBackgroundAlpha~>delegate.dayLabelPresentWeekdayHighlightedBackgroundAlpha?()
-            
+
             dayLabelWeekdaySelectedBackgroundColor~>delegate.dayLabelWeekdaySelectedBackgroundColor?()
             dayLabelWeekdaySelectedBackgroundAlpha~>delegate.dayLabelWeekdaySelectedBackgroundAlpha?()
             dayLabelPresentWeekdaySelectedBackgroundColor~>delegate.dayLabelPresentWeekdaySelectedBackgroundColor?()
             dayLabelPresentWeekdaySelectedBackgroundAlpha~>delegate.dayLabelPresentWeekdaySelectedBackgroundAlpha?()
-            
+
             dotMarkerColor~>delegate.dotMarkerColor?()
+
+            overlayBackgroundColor~>delegate.overlayBackgroundColor?()
+            overlayTextColor~>delegate.overlayTextColor?()
+            overlayFontLabel~>delegate.overlayFontLabel?()
         }
     }
 }
@@ -125,7 +134,7 @@ extension UIColor {
         let red = CGFloat(((code & 0xFF0000) >> 16)) / 255
         let green = CGFloat(((code & 0xFF00) >> 8)) / 255
         let blue = CGFloat((code & 0xFF)) / 255
-        
+
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
 }
