@@ -43,6 +43,7 @@ public final class CVCalendarView: UIView {
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
     
     private var validated = false
+    private var overlayView:CVCalendarOverlayView!
     
     public var firstWeekday: Weekday {
         get {
@@ -145,6 +146,19 @@ public final class CVCalendarView: UIView {
             
             if calendarMode == nil {
                 loadCalendarMode()
+                
+                self.overlayView = CVCalendarOverlayView(frame: bounds)
+                self.overlayView.hidden = true
+                self.addSubview(self.overlayView)
+                let top = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.overlayView, attribute: .Top, multiplier: 1, constant: 0)
+                
+                let bottom = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.overlayView, attribute: .Bottom, multiplier: 1, constant: 0)
+                
+                let trailing = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: self.overlayView, attribute: .Trailing, multiplier: 1, constant: 0)
+                
+                let leading = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: self.overlayView, attribute: .Leading, multiplier: 1, constant: 0)
+                
+                self.addConstraints([top, bottom, leading, trailing])
             }
         }
     }
@@ -185,17 +199,23 @@ public final class CVCalendarView: UIView {
     
     public init() {
         super.init(frame: CGRectZero)
+        self.layer.borderColor = UIColor.yellowColor().CGColor
+        self.layer.borderWidth = 4
         hidden = true
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        self.layer.borderColor = UIColor.yellowColor().CGColor
+        self.layer.borderWidth = 4
         hidden = true
     }
 
     /// IB Initialization
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.layer.borderColor = UIColor.yellowColor().CGColor
+        self.layer.borderWidth = 4
         hidden = true
     }
 }
@@ -330,5 +350,20 @@ private extension CVCalendarView {
             
             addSubview(contentController.scrollView)
         }
+    }
+}
+
+// MARK: Overlay 
+extension CVCalendarView {
+    func showOverlay(withDate date: NSDate) {
+        self.overlayView.setMonthName(withDate: date)
+        self.overlayView.backgroundColor = UIColor.lightGrayColor()
+        self.overlayView.alpha = 0.3
+        self.overlayView.hidden = false
+        self.overlayView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentController.scrollView.bounds), CGRectGetHeight(self.contentController.scrollView.bounds))
+    }
+    
+    func hideOverlay() {
+        self.overlayView.hidden = true
     }
 }
