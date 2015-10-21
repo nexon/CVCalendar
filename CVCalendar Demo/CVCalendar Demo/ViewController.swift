@@ -58,7 +58,7 @@ extension ViewController: CVCalendarViewDelegate, CVCalendarMenuViewDelegate {
         return true // Default value is true
     }
     
-    func didSelectDayView(dayView: CVCalendarDayView) {
+    func didSelectDayView(dayView: CVCalendarDayView, animationDidFinish: Bool) {
         let date = dayView.date
         print("\(calendarView.presentedDate.commonDescription) is selected!")
     }
@@ -276,11 +276,28 @@ extension ViewController {
         
         self.calendarView.toggleViewWithDate(resultDate)
     }
+
+    func didShowNextMonthView(date: NSDate)
+    {
+        let calendar = NSCalendar.currentCalendar()
+        let calendarManager = calendarView.manager
+        let components = Manager.componentsForDate(date) // from today
+        
+        print("Showing Month: \(components.month)")
+    }
+    
+    
+    func didShowPreviousMonthView(date: NSDate)
+    {
+        let calendar = NSCalendar.currentCalendar()
+        let calendarManager = calendarView.manager
+        let components = Manager.componentsForDate(date) // from today
+        
+        print("Showing Month: \(components.month)")
+    }
     
     func shouldShowOverlayView() -> Bool
     {
         return true
     }
-    
-    
 }

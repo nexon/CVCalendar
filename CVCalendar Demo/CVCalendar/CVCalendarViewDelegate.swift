@@ -22,7 +22,7 @@ public protocol CVCalendarViewDelegate {
     optional func shouldAutoSelectDayOnWeekChange() -> Bool
     optional func shouldAutoSelectDayOnMonthChange() -> Bool
     optional func shouldShowWeekdaysOut() -> Bool
-    optional func didSelectDayView(dayView: DayView)
+    optional func didSelectDayView(dayView: DayView, animationDidFinish: Bool)
     optional func presentedDateUpdated(date: Date)
     optional func topMarker(shouldDisplayOnDayView dayView: DayView) -> Bool
     optional func dotMarker(shouldMoveOnHighlightingOnDayView dayView: DayView) -> Bool
@@ -37,5 +37,8 @@ public protocol CVCalendarViewDelegate {
     optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
     optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
     
+    optional func didShowNextMonthView(date: NSDate)
+    optional func didShowPreviousMonthView(date: NSDate)
+
     optional func shouldShowOverlayView() -> Bool
 }
