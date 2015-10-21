@@ -36,4 +36,6 @@ public protocol CVCalendarViewDelegate {
     
     optional func supplementaryView(viewOnDayView dayView: DayView) -> UIView
     optional func supplementaryView(shouldDisplayOnDayView dayView: DayView) -> Bool
+    
+    optional func shouldShowOverlayView() -> Bool
 }

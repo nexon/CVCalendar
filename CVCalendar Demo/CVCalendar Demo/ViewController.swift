@@ -276,4 +276,11 @@ extension ViewController {
         
         self.calendarView.toggleViewWithDate(resultDate)
     }
+    
+    func shouldShowOverlayView() -> Bool
+    {
+        return true
+    }
+    
+    
 }
