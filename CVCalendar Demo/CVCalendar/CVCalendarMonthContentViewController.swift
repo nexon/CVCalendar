@@ -45,7 +45,6 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         }
         
         calendarView.presentedDate = CVDate(date: presentedMonthView.date)
-        self.transitDate   = presentedMonthView.date
     }
     
     public func reloadMonthViews() {
