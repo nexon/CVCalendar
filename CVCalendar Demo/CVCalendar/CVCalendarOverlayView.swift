@@ -16,6 +16,7 @@ class CVCalendarOverlayView: UIView {
     override init(frame: CGRect) {
         self.label = UILabel(frame: CGRectZero)
         self.label.textColor = appearance.overlayTextColor!
+        self.label.font      = appearance.overlayFontLabel!
         super.init(frame: frame)
         self.label.frame = CGRectMake(0, 0, 150, 21)
         
@@ -38,6 +39,7 @@ class CVCalendarOverlayView: UIView {
     required init?(coder aDecoder: NSCoder) {
         self.label = UILabel(frame: CGRectZero)
         self.label.textColor = appearance.overlayTextColor!
+        self.label.font      = appearance.overlayFontLabel!
         super.init(coder: aDecoder)
         self.label.frame = CGRectMake(0, 0, 150, 21)
         
