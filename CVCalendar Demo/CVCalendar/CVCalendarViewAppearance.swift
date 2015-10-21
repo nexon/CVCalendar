@@ -61,6 +61,11 @@ public final class CVCalendarViewAppearance: NSObject {
     // Default dot marker color.
     public var dotMarkerColor: UIColor? = .whiteColor()
     
+    // Default colors for Overlay
+    public var overlayBackgroundColor: UIColor? = UIColor(red: 201/256, green: 201/256, blue: 201/256, alpha: 0.2)
+    public var overlayTextColor: UIColor?       = UIColor.blackColor()
+    public var overlayFontLabel: UIFont?        = UIFont(name: "Avenir-Heavy", size: 18)
+    
     public var delegate: CVCalendarViewAppearanceDelegate? {
         didSet {
             self.setupAppearance()
@@ -107,6 +112,10 @@ public final class CVCalendarViewAppearance: NSObject {
             dayLabelPresentWeekdaySelectedBackgroundAlpha~>delegate.dayLabelPresentWeekdaySelectedBackgroundAlpha?()
             
             dotMarkerColor~>delegate.dotMarkerColor?()
+            
+            overlayBackgroundColor~>delegate.overlayBackgroundColor?()
+            overlayTextColor~>delegate.overlayTextColor?()
+            overlayFontLabel~>delegate.overlayFontLabel?()
         }
     }
 }

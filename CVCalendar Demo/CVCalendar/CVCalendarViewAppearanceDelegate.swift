@@ -55,4 +55,9 @@ public protocol CVCalendarViewAppearanceDelegate {
     
     /// Dot marker default color.
     optional func dotMarkerColor() -> UIColor
+    
+    // Default colors for Overlay
+    optional func overlayBackgroundColor() -> UIColor
+    optional func overlayTextColor()       -> UIColor
+    optional func overlayFontLabel()       -> UIFont
 }

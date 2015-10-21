@@ -150,6 +150,7 @@ public final class CVCalendarView: UIView {
                 self.overlayView = CVCalendarOverlayView(frame: bounds)
                 self.overlayView.hidden = true
                 self.addSubview(self.overlayView)
+                
                 let top = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.overlayView, attribute: .Top, multiplier: 1, constant: 0)
                 
                 let bottom = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.overlayView, attribute: .Bottom, multiplier: 1, constant: 0)
@@ -199,23 +200,17 @@ public final class CVCalendarView: UIView {
     
     public init() {
         super.init(frame: CGRectZero)
-        self.layer.borderColor = UIColor.yellowColor().CGColor
-        self.layer.borderWidth = 4
         hidden = true
     }
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        self.layer.borderColor = UIColor.yellowColor().CGColor
-        self.layer.borderWidth = 4
         hidden = true
     }
 
     /// IB Initialization
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.layer.borderColor = UIColor.yellowColor().CGColor
-        self.layer.borderWidth = 4
         hidden = true
     }
 }
@@ -356,9 +351,7 @@ private extension CVCalendarView {
 // MARK: Overlay 
 extension CVCalendarView {
     func showOverlay(withDate date: NSDate) {
-        self.overlayView.setMonthName(withDate: date)
-        self.overlayView.backgroundColor = UIColor.lightGrayColor()
-        self.overlayView.alpha = 0.3
+        self.overlayView.setMonthName(withDate: self.presentedDate.convertedDate()!)
         self.overlayView.hidden = false
         self.overlayView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentController.scrollView.bounds), CGRectGetHeight(self.contentController.scrollView.bounds))
     }
