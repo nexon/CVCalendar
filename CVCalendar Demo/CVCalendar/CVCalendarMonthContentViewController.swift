@@ -45,6 +45,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         }
         
         calendarView.presentedDate = CVDate(date: presentedMonthView.date)
+        self.transitDate   = presentedMonthView.date
     }
     
     public func reloadMonthViews() {
@@ -422,6 +423,7 @@ extension CVCalendarMonthContentViewController {
         updateLayoutIfNeeded()
         pageLoadingEnabled = true
         direction = .None
+
         self.hideOverlayIfNeeded()
         
     }
@@ -446,9 +448,7 @@ extension CVCalendarMonthContentViewController {
 private extension CVCalendarMonthContentViewController {
     func presentOverlayIfNeeded() {
         if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
-            if let following = monthViews[Following] {
-                self.calendarView.showOverlay(withDate: following.date)
-            }
+            self.calendarView.showOverlay()
         }
     }
     
