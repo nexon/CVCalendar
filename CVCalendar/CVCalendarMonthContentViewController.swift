@@ -45,6 +45,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
         }
 
         calendarView.presentedDate = CVDate(date: presentedMonthView.date)
+        self.transitDate   = presentedMonthView.date
     }
 
     public func reloadMonthViews() {
@@ -147,8 +148,12 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
     public override func presentPreviousView(view: UIView?) {
         if presentationEnabled {
             presentationEnabled = false
+
             if let extra = monthViews[Following], let presented = monthViews[Presented], let previous = monthViews[Previous] {
                 UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                    self.presentOverlayIfNeeded()
+
+
                     self.prepareTopMarkersOnMonthView(presented, hidden: true)
 
                     extra.frame.origin.x += self.scrollView.frame.width
@@ -159,9 +164,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
                     self.presentedMonthView = previous
 
+
+
+
                     self.updateLayoutIfNeeded()
                 }) { _ in
                     extra.removeFromSuperview()
+                    self.hideOverlayIfNeeded()
                     self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
                     self.updateSelection()
                     self.presentationEnabled = true
@@ -169,6 +178,9 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     for monthView in self.monthViews.values {
                         self.prepareTopMarkersOnMonthView(monthView, hidden: false)
                     }
+
+
+
                 }
             }
         }
@@ -177,9 +189,12 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
     public override func presentNextView(view: UIView?) {
         if presentationEnabled {
             presentationEnabled = false
+
             if let extra = monthViews[Previous], let presented = monthViews[Presented], let following = monthViews[Following] {
                 UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
                     self.prepareTopMarkersOnMonthView(presented, hidden: true)
+
+                    self.presentOverlayIfNeeded()
 
                     extra.frame.origin.x -= self.scrollView.frame.width
                     presented.frame.origin.x -= self.scrollView.frame.width
@@ -188,10 +203,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
                     self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
                     self.presentedMonthView = following
+//                    self.presentOverlayIfNeeded()
+
 
                     self.updateLayoutIfNeeded()
                 }) { _ in
                     extra.removeFromSuperview()
+                    self.hideOverlayIfNeeded()
                     self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
                     self.updateSelection()
                     self.presentationEnabled = true
@@ -199,6 +217,9 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     for monthView in self.monthViews.values {
                         self.prepareTopMarkersOnMonthView(monthView, hidden: false)
                     }
+
+
+
                 }
             }
         }
@@ -385,6 +406,7 @@ extension CVCalendarMonthContentViewController {
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if let presented = monthViews[Presented] {
             prepareTopMarkersOnMonthView(presented, hidden: true)
+            self.presentOverlayIfNeeded()
         }
     }
 
@@ -402,6 +424,8 @@ extension CVCalendarMonthContentViewController {
         pageLoadingEnabled = true
         direction = .None
 
+        self.hideOverlayIfNeeded()
+
     }
 
     public func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -417,5 +441,21 @@ extension CVCalendarMonthContentViewController {
         for monthView in monthViews.values {
             prepareTopMarkersOnMonthView(monthView, hidden: false)
         }
+    }
+}
+
+// MARK: Present Overlay
+private extension CVCalendarMonthContentViewController {
+    func presentOverlayIfNeeded() {
+        if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
+            self.calendarView.showOverlay()
+        }
+    }
+
+    func hideOverlayIfNeeded() {
+        if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
+            self.calendarView.hideOverlay()
+        }
+
     }
 }
