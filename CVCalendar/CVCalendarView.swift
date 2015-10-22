@@ -39,12 +39,12 @@ public final class CVCalendarView: UIView {
     public var animator: Animator!
     public var contentController: ContentViewController!
     public var calendarMode: CalendarMode!
-
+    
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
-
+    
     private var validated = false
     private var overlayView:CVCalendarOverlayView!
-
+    
     public var firstWeekday: Weekday {
         get {
             if let delegate = delegate {
@@ -54,7 +54,7 @@ public final class CVCalendarView: UIView {
             }
         }
     }
-
+    
     public var shouldShowWeekdaysOut: Bool! {
         if let delegate = delegate, let shouldShow = delegate.shouldShowWeekdaysOut?() {
             return shouldShow
@@ -62,7 +62,7 @@ public final class CVCalendarView: UIView {
             return false
         }
     }
-
+    
     public var presentedDate: Date! {
         didSet {
             if let oldValue = oldValue {
@@ -70,17 +70,17 @@ public final class CVCalendarView: UIView {
             }
         }
     }
-
+    
     public var shouldAnimateResizing: Bool {
         get {
             if let delegate = delegate, should = delegate.shouldAnimateResizing?() {
                 return should
             }
-
+            
             return true
         }
     }
-
+    
     public var shouldAutoSelectDayOnMonthChange: Bool{
         get {
             if let delegate = delegate, should = delegate.shouldAutoSelectDayOnMonthChange?() {
@@ -89,7 +89,7 @@ public final class CVCalendarView: UIView {
             return true
         }
     }
-
+    
     public var shouldAutoSelectDayOnWeekChange: Bool{
         get {
             if let delegate = delegate, should = delegate.shouldAutoSelectDayOnWeekChange?() {
@@ -98,7 +98,7 @@ public final class CVCalendarView: UIView {
             return true
         }
     }
-
+    
     public var shouldScrollOnOutDayViewSelection: Bool{
         get {
             if let delegate = delegate, should = delegate.shouldScrollOnOutDayViewSelection?() {
@@ -107,102 +107,102 @@ public final class CVCalendarView: UIView {
             return true
         }
     }
-
+    
     // MARK: - Calendar View Delegate
-
+    
     @IBOutlet public weak var calendarDelegate: AnyObject? {
         set {
             if let calendarDelegate = newValue as? Delegate {
                 delegate = calendarDelegate
             }
         }
-
+        
         get {
             return delegate
         }
     }
-
+    
     public var delegate: CVCalendarViewDelegate? {
         didSet {
             if manager == nil {
                 manager = Manager(calendarView: self)
             }
-
+            
             if appearance == nil {
                 appearance = Appearance()
             }
-
+            
             if touchController == nil {
                 touchController = TouchController(calendarView: self)
             }
-
+            
             if coordinator == nil {
                 coordinator = Coordinator(calendarView: self)
             }
-
+            
             if animator == nil {
                 animator = Animator(calendarView: self)
             }
-
+            
             if calendarMode == nil {
                 loadCalendarMode()
-
+                
                 self.overlayView = CVCalendarOverlayView(frame: bounds)
                 self.overlayView.hidden = true
                 self.addSubview(self.overlayView)
-
+                
                 let top = NSLayoutConstraint(item: self, attribute: .Top, relatedBy: .Equal, toItem: self.overlayView, attribute: .Top, multiplier: 1, constant: 0)
-
+                
                 let bottom = NSLayoutConstraint(item: self, attribute: .Bottom, relatedBy: .Equal, toItem: self.overlayView, attribute: .Bottom, multiplier: 1, constant: 0)
-
+                
                 let trailing = NSLayoutConstraint(item: self, attribute: .Trailing, relatedBy: .Equal, toItem: self.overlayView, attribute: .Trailing, multiplier: 1, constant: 0)
-
+                
                 let leading = NSLayoutConstraint(item: self, attribute: .Leading, relatedBy: .Equal, toItem: self.overlayView, attribute: .Leading, multiplier: 1, constant: 0)
-
+                
                 self.addConstraints([top, bottom, leading, trailing])
             }
         }
     }
-
+    
     // MARK: - Calendar Appearance Delegate
-
+    
     @IBOutlet public weak var calendarAppearanceDelegate: AnyObject? {
         set {
             if let calendarAppearanceDelegate = newValue as? AppearanceDelegate {
                 if appearance == nil {
                     appearance = Appearance()
                 }
-
+                
                 appearance.delegate = calendarAppearanceDelegate
             }
         }
-
+        
         get {
             return appearance
         }
     }
-
+    
     // MARK: - Calendar Animator Delegate
-
+    
     @IBOutlet public weak var animatorDelegate: AnyObject? {
         set {
             if let animatorDelegate = newValue as? AnimatorDelegate {
                 animator.delegate = animatorDelegate
             }
         }
-
+        
         get {
             return animator
         }
     }
-
+    
     // MARK: - Initialization
-
+    
     public init() {
         super.init(frame: CGRectZero)
         hidden = true
     }
-
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         hidden = true
@@ -223,17 +223,17 @@ extension CVCalendarView {
             let contentViewSize = contentController.bounds.size
             let selfSize = bounds.size
             let screenSize = UIScreen.mainScreen().bounds.size
-
+            
             let allowed = selfSize.width <= screenSize.width && selfSize.height <= screenSize.height
-
+            
             if !validated && allowed {
                 let width = selfSize.width
                 let height: CGFloat
                 let countOfWeeks = CGFloat(6)
-
+                
                 let vSpace = appearance.spaceBetweenWeekViews!
                 let hSpace = appearance.spaceBetweenDayViews!
-
+                
                 if let mode = calendarMode {
                     switch mode {
                     case .WeekView:
@@ -241,7 +241,7 @@ extension CVCalendarView {
                     case .MonthView :
                         height = (selfSize.height / countOfWeeks) - (vSpace * countOfWeeks)
                     }
-
+                    
                     // If no height constraint found we set it manually.
                     var found = false
                     for constraint in constraints {
@@ -249,15 +249,15 @@ extension CVCalendarView {
                             found = true
                         }
                     }
-
+                    
                     if !found {
                         addConstraint(NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Height, multiplier: 1, constant: frame.height))
                     }
-
+                    
                     weekViewSize = CGSizeMake(width, height)
                     dayViewSize = CGSizeMake((width / 7.0) - hSpace, height)
                     validated = true
-
+                    
                     contentController.updateFrames(selfSize != contentViewSize ? bounds : CGRectZero)
                 }
             }
@@ -283,27 +283,27 @@ extension CVCalendarView {
     public func changeDaysOutShowingState(shouldShow: Bool) {
         contentController.updateDayViews(shouldShow)
     }
-
+    
     public func toggleViewWithDate(date: NSDate) {
         contentController.togglePresentedDate(date)
     }
-
+    
     public func toggleCurrentDayView() {
         contentController.togglePresentedDate(NSDate())
     }
-
+    
     public func loadNextView() {
         contentController.presentNextView(nil)
     }
-
+    
     public func loadPreviousView() {
         contentController.presentPreviousView(nil)
     }
-
+    
     public func changeMode(mode: CalendarMode) {
         if let selectedDate = coordinator.selectedDayView?.date.convertedDate() where calendarMode != mode {
             calendarMode = mode
-
+            
             let newController: ContentController
             switch mode {
             case .WeekView:
@@ -313,12 +313,12 @@ extension CVCalendarView {
                 contentController.updateHeight(contentController.presentedMonthView.potentialSize.height, animated: true)
                 newController = MonthContentViewController(calendarView: self, frame: bounds, presentedDate: selectedDate)
             }
-
-
+            
+            
             newController.updateFrames(bounds)
             newController.scrollView.alpha = 0
             addSubview(newController.scrollView)
-
+            
             UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
                 self.contentController.scrollView.alpha = 0
                 newController.scrollView.alpha = 1
@@ -331,7 +331,7 @@ extension CVCalendarView {
     }
 }
 
-// MARK: - Mode load
+// MARK: - Mode load 
 
 private extension CVCalendarView {
     func loadCalendarMode() {
@@ -342,21 +342,25 @@ private extension CVCalendarView {
                 case .WeekView: contentController = WeekContentViewController(calendarView: self, frame: bounds)
                 default: break
             }
-
+            
             addSubview(contentController.scrollView)
         }
     }
 }
 
-// MARK: Overlay
+// MARK: Overlay 
 extension CVCalendarView {
-    func showOverlay() {
-        self.overlayView.setMonthName(withDate: self.contentController.presentedMonthView.date)
+    func showOverlay(withDate date: NSDate) {
+        self.overlayView.setMonthName(withDate: date)
         self.overlayView.hidden = false
         self.overlayView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentController.scrollView.bounds), CGRectGetHeight(self.contentController.scrollView.bounds))
     }
-
+    
     func hideOverlay() {
         self.overlayView.hidden = true
+    }
+    
+    func updateOverlayLabel(withDate date: NSDate) {
+        self.overlayView.setMonthName(withDate: date)
     }
 }
