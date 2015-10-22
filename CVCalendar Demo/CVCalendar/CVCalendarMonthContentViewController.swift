@@ -150,7 +150,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
             
             if let extra = monthViews[Following], let presented = monthViews[Presented], let previous = monthViews[Previous] {
                 UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                    self.presentOverlayIfNeeded()
+                    
                     
 
                     self.prepareTopMarkersOnMonthView(presented, hidden: true)
@@ -162,7 +162,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     self.replaceMonthView(presented, withIdentifier: self.Following, animatable: false)
                     self.replaceMonthView(previous, withIdentifier: self.Presented, animatable: false)
                     self.presentedMonthView = previous
-                    
+                    self.presentOverlayIfNeeded(withDate: previous.date)
                     
                     
                     
@@ -193,8 +193,6 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                 UIView.animateWithDuration(0.5, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
                     self.prepareTopMarkersOnMonthView(presented, hidden: true)
                     
-                    self.presentOverlayIfNeeded()
-                    
                     extra.frame.origin.x -= self.scrollView.frame.width
                     presented.frame.origin.x -= self.scrollView.frame.width
                     following.frame.origin.x -= self.scrollView.frame.width
@@ -202,7 +200,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     self.replaceMonthView(presented, withIdentifier: self.Previous, animatable: false)
                     self.replaceMonthView(following, withIdentifier: self.Presented, animatable: false)
                     self.presentedMonthView = following
-//                    self.presentOverlayIfNeeded()
+                    self.presentOverlayIfNeeded(withDate: following.date)
                     
 
                     self.updateLayoutIfNeeded()
@@ -400,12 +398,32 @@ extension CVCalendarMonthContentViewController {
         }
         
         lastContentOffset = scrollView.contentOffset.x
+        
+        let rightBorder = scrollView.frame.width
+        if scrollView.contentOffset.x <= rightBorder {
+            direction = .Right
+        } else  {
+            direction = .Left
+        }
+        
+        if let presented = monthViews[Presented], let previous = monthViews[Previous], let following = monthViews[Following] {
+            switch(direction) {
+            case .Left: self.updateOverlayLabel(withDate: following.date)
+            break
+            case .Right: self.updateOverlayLabel(withDate: previous.date)
+            break
+            case .None: self.updateOverlayLabel(withDate: presented.date)
+            break
+            }
+        }
     }
     
     public func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        lastContentOffset = scrollView.contentOffset.x
+        
         if let presented = monthViews[Presented] {
             prepareTopMarkersOnMonthView(presented, hidden: true)
-            self.presentOverlayIfNeeded()
+            self.presentOverlayIfNeeded(withDate: presented.date)
         }
     }
     
@@ -445,9 +463,9 @@ extension CVCalendarMonthContentViewController {
 
 // MARK: Present Overlay
 private extension CVCalendarMonthContentViewController {
-    func presentOverlayIfNeeded() {
+    func presentOverlayIfNeeded(withDate date: NSDate) {
         if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
-            self.calendarView.showOverlay()
+            self.calendarView.showOverlay(withDate: date)
         }
     }
     
@@ -455,6 +473,11 @@ private extension CVCalendarMonthContentViewController {
         if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
             self.calendarView.hideOverlay()
         }
-
+    }
+    
+    func updateOverlayLabel(withDate date: NSDate) {
+        if let showOverlay = self.calendarView.delegate?.shouldShowOverlayView?() where showOverlay == true {
+            self.calendarView.updateOverlayLabel(withDate: date)
+        }
     }
 }

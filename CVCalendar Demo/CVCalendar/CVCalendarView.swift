@@ -350,13 +350,17 @@ private extension CVCalendarView {
 
 // MARK: Overlay 
 extension CVCalendarView {
-    func showOverlay() {
-        self.overlayView.setMonthName(withDate: self.contentController.presentedMonthView.date)
+    func showOverlay(withDate date: NSDate) {
+        self.overlayView.setMonthName(withDate: date)
         self.overlayView.hidden = false
         self.overlayView.frame = CGRectMake(0, 0, CGRectGetWidth(self.contentController.scrollView.bounds), CGRectGetHeight(self.contentController.scrollView.bounds))
     }
     
     func hideOverlay() {
         self.overlayView.hidden = true
+    }
+    
+    func updateOverlayLabel(withDate date: NSDate) {
+        self.overlayView.setMonthName(withDate: date)
     }
 }
