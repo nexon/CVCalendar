@@ -171,7 +171,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     extra.removeFromSuperview()
                     self.hideOverlayIfNeeded()
                     self.insertMonthView(self.getPreviousMonth(previous.date), withIdentifier: self.Previous)
-                    self.updateSelection()
+//                    self.updateSelection()
                     self.presentationEnabled = true
                     
                     for monthView in self.monthViews.values {
@@ -208,7 +208,7 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     extra.removeFromSuperview()
                     self.hideOverlayIfNeeded()
                     self.insertMonthView(self.getFollowingMonth(following.date), withIdentifier: self.Following)
-                    self.updateSelection()
+//                    self.updateSelection()
                     self.presentationEnabled = true
                     
                     for monthView in self.monthViews.values {
