@@ -438,7 +438,7 @@ extension CVCalendarMonthContentViewController {
             }
         }
 
-        // updateSelection()
+        updateSelection()
         updateLayoutIfNeeded()
         pageLoadingEnabled = true
         direction = .None
