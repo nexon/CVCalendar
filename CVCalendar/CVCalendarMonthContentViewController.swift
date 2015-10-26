@@ -339,20 +339,20 @@ extension CVCalendarMonthContentViewController {
 
     public func updateSelection() {
         let coordinator = calendarView.coordinator
-        if let selected = coordinator.selectedDayView {
-            for (index, monthView) in monthViews {
-                if indexOfIdentifier(index) != 1 {
-                    monthView.mapDayViews {
-                        dayView in
-
-                        if dayView == selected {
-                            dayView.setDeselectedWithClearing(true)
-                            coordinator.dequeueDayView(dayView)
-                        }
-                    }
-                }
-            }
-        }
+        // if let selected = coordinator.selectedDayView {
+   //          for (index, monthView) in monthViews {
+   //              if indexOfIdentifier(index) != 1 {
+   //                  monthView.mapDayViews {
+   //                      dayView in
+   //
+   //                      if dayView == selected {
+   //                          dayView.setDeselectedWithClearing(true)
+   //                          coordinator.dequeueDayView(dayView)
+   //                      }
+   //                  }
+   //              }
+   //          }
+   //      }
 
         if let presentedMonthView = monthViews[Presented] {
             self.presentedMonthView = presentedMonthView
@@ -438,7 +438,7 @@ extension CVCalendarMonthContentViewController {
             }
         }
 
-        // updateSelection()
+        updateSelection()
         updateLayoutIfNeeded()
         pageLoadingEnabled = true
         direction = .None
