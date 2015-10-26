@@ -161,7 +161,7 @@ public final class CVCalendarWeekContentViewController: CVCalendarContentViewCon
                 }) { _ in
                     extra.removeFromSuperview()
                     self.insertWeekView(self.getPreviousWeek(previous), withIdentifier: self.Previous)
-                    self.updateSelection()
+//                    self.updateSelection()
                     self.presentationEnabled = true
                     
                     for weekView in self.weekViews.values {
@@ -467,7 +467,7 @@ extension CVCalendarWeekContentViewController {
             }
         }
         
-        updateSelection()
+//        updateSelection()
         pageLoadingEnabled = true
         direction = .None
     }
