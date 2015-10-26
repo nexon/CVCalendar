@@ -251,11 +251,13 @@ public final class CVCalendarMonthContentViewController: CVCalendarContentViewCo
                     UIView.animateWithDuration(0.8, delay: 0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
                         presented.alpha = 0
                         currentMonthView.alpha = 1
+                        self.presentOverlayIfNeeded(withDate: date)
                     }) { _ in
                         presented.removeFromSuperview()
                         self.selectDayViewWithDay(presentedDate.day, inMonthView: currentMonthView)
                         self.togglingBlocked = false
                         self.updateLayoutIfNeeded()
+                        self.hideOverlayIfNeeded()
                     }
                 } else {
                     if let currentMonthView = monthViews[Presented] {
